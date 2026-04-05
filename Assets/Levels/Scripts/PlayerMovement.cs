@@ -1,47 +1,50 @@
-using System.Net.Sockets;
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float speed ;
-    [SerializeField] private float jumppower ;
+    [SerializeField] private float speed;
+    [SerializeField] private float jumppower;
     private Rigidbody2D rb;
     private bool grounded;
+    private float horizontalInput; 
+    private bool jumpRequested;    
+    private SpriteRenderer sr;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
-    
+
 
     void Update()
     {
-        float horizontalinput = Input.GetAxis("Horizontal");
-        rb.linearVelocity = new Vector2(horizontalinput * speed, rb.linearVelocityY);
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        if (horizontalInput > 0.01f)
+            sr.flipX = false;
+        else if (horizontalInput < -0.01f)
+            sr.flipX = true;
 
-
-        if(horizontalinput > 0.01f)
-            transform.localScale = Vector3.one;
-        else if (horizontalinput < -0.01f) 
-            transform.localScale = new Vector3(-1,1,1);
-
-
-        if (Input.GetKey(KeyCode.Space) && grounded)
-           Jump();
+        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+            jumpRequested = true;
     }
 
 
-    private void Jump()
+    private void FixedUpdate()
     {
-       rb.linearVelocity = new Vector2(rb.linearVelocityX, jumppower);
-       grounded = false;
+        rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocityY);
+
+        if (jumpRequested)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocityX, jumppower);
+            grounded = false;
+            jumpRequested = false;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Ground")
+        if (collision.gameObject.CompareTag("Ground")) // ✅ CompareTag lebih efisien
             grounded = true;
     }
 }
