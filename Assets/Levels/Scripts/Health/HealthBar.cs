@@ -11,12 +11,12 @@ public class NewMonoBehaviourScript : MonoBehaviour
     [SerializeField] private Image currenthealthBar;
     void Start()
     {
-        totalhealthBar.fillAmount = playerHealth.currentHealth / 10;
+        totalhealthBar.fillAmount = playerHealth.currentHealth / playerHealth.startingHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        currenthealthBar.fillAmount = playerHealth.currentHealth / 10;
+        currenthealthBar.fillAmount = playerHealth.currentHealth / playerHealth.startingHealth;
     }
 }
