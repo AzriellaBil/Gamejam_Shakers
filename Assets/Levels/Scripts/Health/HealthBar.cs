@@ -1,22 +1,34 @@
 
 using UnityEngine;
+using UnityEngine.Splines.ExtrusionShapes;
 using UnityEngine.UI;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private Health playerHealth;
-    [SerializeField] private Image totalhealthBar;
-
     [SerializeField] private Image currenthealthBar;
     void Start()
     {
-        totalhealthBar.fillAmount = playerHealth.currentHealth / playerHealth.startingHealth;
+        currenthealthBar.fillAmount = playerHealth.currentHealth / playerHealth.startingHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
-        currenthealthBar.fillAmount = playerHealth.currentHealth / playerHealth.startingHealth;
     }
+
+    public void UpdateHealthBar()
+    {
+        float targetFill = playerHealth.currentHealth / playerHealth.startingHealth;
+
+        LeanTween.cancel(gameObject); 
+
+        LeanTween.value(gameObject, currenthealthBar.fillAmount, targetFill, 0.3f)
+            .setOnUpdate((float val) => {
+                currenthealthBar.fillAmount = val;
+            })
+            .setEase(LeanTweenType.easeOutQuad);
+    }
+
 }
