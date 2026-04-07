@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIMenu : MonoBehaviour
+public class PauseUI : MonoBehaviour
 {
     [SerializeField] float TweeenSpeed;
     [SerializeField] CanvasGroup cg;

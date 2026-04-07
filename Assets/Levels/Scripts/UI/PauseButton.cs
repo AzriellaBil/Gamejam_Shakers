@@ -11,7 +11,6 @@ public class PauseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         if(cg.alpha == 1)
-            print("B");
             LeanTween.cancel(gameObject); 
 
             LeanTween.value(gameObject, 0f,1f, TweeenSpeed)
@@ -25,7 +24,7 @@ public class PauseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerExit(PointerEventData eventData)
     {
         if(cg.alpha == 1)
-            print("B");
+
             LeanTween.cancel(gameObject); 
 
             LeanTween.value(gameObject, 1f, 0f, TweeenSpeed)
