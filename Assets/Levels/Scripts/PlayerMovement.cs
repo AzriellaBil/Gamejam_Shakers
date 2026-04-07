@@ -1,9 +1,14 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementScript : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumppower;
+    [SerializeField] private float wallSlideSpeed;
+    [SerializeField] private float wallJumpX;   // kekuatan loncat horizontal
+    [SerializeField] private float wallJumpY;   // kekuatan loncat vertical
+    [SerializeField] private float wallStickTime; // durasi "diem" sebelum slide
+    
     private Rigidbody2D rb;
     private bool grounded;
     private float horizontalInput; 
@@ -41,15 +46,27 @@ public class PlayerMovement : MonoBehaviour
             jumpRequested = false;
         }
     }
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.CompareTag("Location"))
-            print(collision.gameObject.name) ;  
-    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground")) 
-            grounded = true;
+        if (collision.gameObject.CompareTag("Ground"))
+            isGrounded = true;
+            
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            isTouchingWall = true;
+            wallStickTimer = wallStickTime;
+            // Detect wall ada di kiri atau kanan player
+            wallDirection = transform.position.x < collision.transform.position.x ? 1 : -1;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+            isGrounded = false;
+        if (collision.gameObject.CompareTag("Wall"))
+            isTouchingWall = false;
     }
 
 
