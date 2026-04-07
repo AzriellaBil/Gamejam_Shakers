@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6298f01407a94110b6787a48e881837a, type: 3}
+  m_Name: LocationData
+  m_EditorClassIdentifier: GDX::GDX.DataTables.StableDataTable
+  m_MetaData: {fileID: 1372258710668647603}
+  m_AllStringColumns:
+  - TArray:
+    - Glory Glory Man United, Glory Glory Man United, Glory Glory Man United
+    - U N I T E D United Are The Team For Me
+  - TArray:
+    - Starter Area
+    - Main Stage
+  m_AllBoolColumns: []
+  m_AllCharColumns: []
+  m_AllSByteColumns: []
+  m_AllByteColumns: []
+  m_AllShortColumns: []
+  m_AllUShortColumns: []
+  m_AllIntColumns: []
+  m_AllUIntColumns: []
+  m_AllLongColumns: []
+  m_AllULongColumns: []
+  m_AllFloatColumns: []
+  m_AllDoubleColumns: []
+  m_AllVector2Columns: []
+  m_AllVector3Columns: []
+  m_AllVector4Columns: []
+  m_AllVector2IntColumns: []
+  m_AllVector3IntColumns: []
+  m_AllQuaternionColumns: []
+  m_AllRectColumns: []
+  m_AllRectIntColumns: []
+  m_AllColorColumns: []
+  m_AllLayerMaskColumns: []
+  m_AllBoundsColumns: []
+  m_AllBoundsIntColumns: []
+  m_AllHash128Columns: []
+  m_AllGradientColumns: []
+  m_AllAnimationCurveColumns: []
+  m_AllObjectRefColumns: []
+  m_AllEnumIntColumns: []
+  m_AllObjectRefTypeNames: []
+  m_AllEnumIntTypeNames: []
+  m_AllColumnNames:
+  - TArray:
+    - L_Desc
+    - L_Name
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  - TArray: []
+  m_RowIdentifierToDenseIndexMap: 0000000001000000
+  m_RowDenseIndexToIDMap: 0000000001000000
+  m_RowNames:
+  - 1
+  - 2
+  m_RowEntriesFreeListHead: 2
+  m_RowCount: 2
+  m_ColumnIdentifierToDenseIndexMap:
+  - ColumnType: 0
+    ColumnDenseIndex: 1
+  - ColumnType: 0
+    ColumnDenseIndex: 0
+  m_ColumnIdentifierToSortOrderMap: 0000000001000000
+  m_SortedOrderToColumnIdentifierMap: 0000000001000000
+  m_ColumnDenseIndexToIDMap:
+  - TArray: 0100000000000000
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  - TArray: 
+  m_ColumnEntriesFreeListHead: 2
+  m_CombinedColumnCount: 2
+  m_DataVersion: 249
+  m_StructureVersion: 1
+--- !u!114 &1372258710668647603
+MonoBehaviour:
+  m_ObjectHideFlags: 27
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5fa64f58c594ba4e823cf3c3da911b3, type: 3}
+  m_Name: DataTableMetaData_EditorOnly
+  m_EditorClassIdentifier: GDX::GDX.DataTables.DataTableMetaData
+  BindingUri: 
+  BindingDataVersion: 0
+  DisplayName: GDX DataTable
+  ReferencesOnlyMode: 0
+  SupportsUndo: 0

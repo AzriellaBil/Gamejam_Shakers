@@ -98,7 +98,11 @@ public class PlayerMovement : MonoBehaviour
             jumpRequested = false;
         }
     }
-
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Location"))
+            print(collision.gameObject.name) ;  
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
@@ -119,5 +123,9 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         if (collision.gameObject.CompareTag("Wall"))
             isTouchingWall = false;
+        if (collision.gameObject.CompareTag("Ground")) 
+            grounded = true;
     }
+
+
 }
