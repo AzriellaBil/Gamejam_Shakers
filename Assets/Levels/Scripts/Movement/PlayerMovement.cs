@@ -1,3 +1,5 @@
+using System.Collections; 
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -8,6 +10,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float wallJumpX = 15f;   // kekuatan loncat horizontal
     [SerializeField] private float wallJumpY = 15f;   // kekuatan loncat vertical
     [SerializeField] private float wallStickTime = 3f; // durasi "diem" sebelum slide
+    [SerializeField] public float dashPower = 30f;
+    [SerializeField] private float dashTime = 0.2f;
+    [SerializeField] private float dashCooldown = 1f;
+
+    private int facingDirection = 1;
     
     private Rigidbody2D rb;
     private SpriteRenderer sr;
@@ -19,8 +26,12 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpRequested;
     private float horizontalInput;
     
-    private float wallStickTimer;   // timer sebelum mulai slide
-    private bool isWallSticking;    // fase "diem" di wall
+    private float wallStickTimer;
+    private bool isWallSticking;
+
+    private bool canDash;
+    private bool isDashing;
+    [SerializeField] private TrailRenderer tr;
 
     private void Awake()
     {
@@ -28,12 +39,28 @@ public class PlayerMovement : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
     }
 
+    private void Start()
+    {
+        canDash = true;
+    }
+
     void Update()
     {
+        if (isDashing)
+        {
+            return;
+        }
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
         
-        if (horizontalInput > 0.01f) sr.flipX = false;
-        else if (horizontalInput < -0.01f) sr.flipX = true;
+        if (horizontalInput > 0.01f) {
+            sr.flipX = false;
+            facingDirection = 1;
+        }
+        else if (horizontalInput < -0.01f) {
+            sr.flipX = true;
+            facingDirection = -1;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -58,10 +85,20 @@ public class PlayerMovement : MonoBehaviour
             wallStickTimer = wallStickTime; // reset timer kalau lepas dari wall
             isWallSticking = false;
         }
+
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
     }
 
     private void FixedUpdate()
     {
+        if (isDashing)
+        {
+            return;
+        }
         if (isTouchingWall && !isGrounded)
         {
             if (isWallSticking)
@@ -97,8 +134,13 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
             jumpRequested = false;
         }
-    }
 
+    }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Location"))
+            print(collision.gameObject.name) ;  
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
@@ -121,5 +163,26 @@ public class PlayerMovement : MonoBehaviour
             isTouchingWall = false;
     }
 
-
+    private IEnumerator Dash()
+    {
+        isDashing = true;
+        canDash = false;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.linearVelocity = new Vector2(facingDirection * dashPower, 0f);
+        if (tr != null)
+        {
+            tr.emitting = true;
+        }
+        yield return new WaitForSeconds(dashTime);
+        if (tr != null)
+        {
+            tr.emitting = false;
+        }
+        rb.gravityScale = originalGravity;
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocityY);
+        isDashing = false;
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
 }
