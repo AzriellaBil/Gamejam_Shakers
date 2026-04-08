@@ -32,7 +32,11 @@ public class PauseUI : MonoBehaviour
 
     public void QuitMenu()
     {
-        SceneManager.LoadScene("Main Menu");
+        if(IsPaused == true)
+        {
+                   SceneManager.LoadScene("Main Menu"); 
+        }
+
     }
 
         void Update()

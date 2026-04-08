@@ -1,4 +1,4 @@
-using GDX.DataTables.CellValues;
+
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -6,7 +6,6 @@ public class locationUI : MonoBehaviour
 {
     [SerializeField] CanvasGroup cg;
     [SerializeField] float TweeenSpeed;
-    public FloatCellValue LocationCell;
 
     public StringEventChannel onNewLocation;
     public LocationDatabase databaseReference;
@@ -21,12 +20,17 @@ public class locationUI : MonoBehaviour
     }
     void OnEnable()
     {
-        onNewLocation.OnEventRaised += ShowLocationUI;
+        if (onNewLocation == null)
+    {
+        Debug.LogError("onNewLocation is not assigned in the Inspector!", this);
+        return;
+    }
+    onNewLocation.OnEventRaised += ShowLocationUI;
     }
 
     void OnDisable()
     {
-        onNewLocation.OnEventRaised += ShowLocationUI;
+       onNewLocation.OnEventRaised += ShowLocationUI;
     }
 
     void ShowLocationUI(string Locations)

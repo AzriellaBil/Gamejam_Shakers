@@ -621,7 +621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Button
   Outline: {fileID: 1127554247}
-  TweeenSpeed: 0.1
+  TweenSpeed: 0.2
   cg: {fileID: 397079518}
 --- !u!114 &536909620
 MonoBehaviour:
@@ -866,7 +866,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Button
   Outline: {fileID: 183130511}
-  TweeenSpeed: 0.1
+  TweenSpeed: 0.2
   cg: {fileID: 397079518}
 --- !u!114 &996194471
 MonoBehaviour:

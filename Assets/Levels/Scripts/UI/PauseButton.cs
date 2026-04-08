@@ -5,35 +5,41 @@ using UnityEngine.EventSystems;
 public class PauseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] Image Outline;
-    [SerializeField] float TweeenSpeed;
+    [SerializeField] float TweenSpeed;
     [SerializeField] CanvasGroup cg;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(cg.alpha == 1)
-            LeanTween.cancel(gameObject); 
-
-            LeanTween.value(gameObject, 0f,1f, TweeenSpeed)
-            .setOnUpdate((float val) =>
+        if (cg.alpha == 1)
         {
-            Color c = Outline.color;
-            c.a = val;
-            Outline.color = c;
-        }   );
+            LeanTween.cancel(gameObject);
+            LeanTween.value(gameObject, 0f, 1f, TweenSpeed)
+                .setOnUpdate((float val) =>
+                {
+                    Color c = Outline.color;
+                    c.a = val;
+                    Outline.color = c;
+                });
+        }
     }
+
     public void OnPointerExit(PointerEventData eventData)
     {
-        if(cg.alpha == 1)
-
-            LeanTween.cancel(gameObject); 
-
-            LeanTween.value(gameObject, 1f, 0f, TweeenSpeed)
-            .setOnUpdate((float val) =>
+        if (cg.alpha == 1)
         {
-            Color c = Outline.color;
-            c.a = val;
-            Outline.color = c;
-        }   );
-        
+            LeanTween.cancel(gameObject);
+            LeanTween.value(gameObject, 1f, 0f, TweenSpeed)
+                .setOnUpdate((float val) =>
+                {
+                    Color c = Outline.color;
+                    c.a = val;
+                    Outline.color = c;
+                });
         }
+    }
+
+    void OnDestroy()
+    {
+        LeanTween.cancel(gameObject);
+    }
 }
