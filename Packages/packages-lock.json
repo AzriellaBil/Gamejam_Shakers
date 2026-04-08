@@ -1,17 +1,5 @@
 {
   "dependencies": {
-    "com.dotbunny.gdx": {
-      "version": "https://github.com/dotBunny/GDX.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.collections": "1.2.3",
-        "com.unity.mathematics": "1.2.5",
-        "com.unity.burst": "1.6.4",
-        "com.unity.modules.uielements": "1.0.0"
-      },
-      "hash": "1f69a687fac6ceddca76935b53c9cffbcd87dd52"
-    },
     "com.unity.2d.animation": {
       "version": "14.0.3",
       "depth": 0,
@@ -113,7 +101,7 @@
     },
     "com.unity.burst": {
       "version": "1.8.28",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
@@ -203,6 +191,16 @@
       "depth": 2,
       "source": "registry",
       "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.postprocessing": {
+      "version": "3.5.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.physics": "1.0.0"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.core": {
@@ -309,6 +307,15 @@
       "dependencies": {
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
+      }
+    },
+    "com.unity.visualeffectgraph": {
+      "version": "17.4.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.shadergraph": "17.4.0",
+        "com.unity.render-pipelines.core": "17.4.0"
       }
     },
     "com.unity.visualscripting": {

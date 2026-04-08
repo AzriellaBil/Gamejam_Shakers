@@ -29,6 +29,16 @@ public class PauseUI : MonoBehaviour
         .setEase(LeanTweenType.easeInOutSine);
     
     }
+
+    public void QuitMenu()
+    {
+        if(IsPaused == true)
+        {
+                   SceneManager.LoadScene("Main Menu"); 
+        }
+
+    }
+
         void Update()
     {
             if (Input.GetKeyDown(KeyCode.Escape))

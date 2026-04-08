@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementScript : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float jumppower;
@@ -16,6 +16,12 @@ public class PlayerMovement : MonoBehaviour
 
     private int facingDirection = 1;
     
+    [SerializeField] private float wallSlideSpeed;
+    [SerializeField] private float wallJumpX;   // kekuatan loncat horizontal
+    [SerializeField] private float wallJumpY;   // kekuatan loncat vertical
+    [SerializeField] private float wallStickTime; // durasi "diem" sebelum slide
+    
+
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     
@@ -32,6 +38,10 @@ public class PlayerMovement : MonoBehaviour
     private bool canDash;
     private bool isDashing;
     [SerializeField] private TrailRenderer tr;
+
+    private float wallStickTimer;   // timer sebelum mulai slide
+    private bool isWallSticking;    // fase "diem" di wall
+
 
     private void Awake()
     {
@@ -62,6 +72,12 @@ public class PlayerMovement : MonoBehaviour
             facingDirection = -1;
         }
 
+        
+        if (horizontalInput > 0.01f) sr.flipX = false;
+        else if (horizontalInput < -0.01f) sr.flipX = true;
+
+        if (Input.GetKeyDown(KeyCode.Space) && grounded)
+            jumpRequested = true;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded)
@@ -85,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
             wallStickTimer = wallStickTime; // reset timer kalau lepas dari wall
             isWallSticking = false;
         }
+    }
 
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
@@ -99,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
+        rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocityY);
         if (isTouchingWall && !isGrounded)
         {
             if (isWallSticking)
@@ -120,6 +138,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpRequested)
         {
+            rb.linearVelocity = new Vector2(rb.linearVelocityX, jumppower);
+            grounded = false;
             if (isGrounded)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocityX, jumppower);
@@ -136,13 +156,11 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.CompareTag("Location"))
-            print(collision.gameObject.name) ;  
-    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Ground")) 
+            grounded = true;
         if (collision.gameObject.CompareTag("Ground"))
             isGrounded = true;
             

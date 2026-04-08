@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - Wall
   - Location
+  - Wall
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -19,8 +21,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Enemy
+  - Player
   - 
   - 
   - 
@@ -41,6 +43,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Back
+    uniqueID: 498216791
+    locked: 0
+  - name: Background
+    uniqueID: 861648725
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
