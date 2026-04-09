@@ -13,22 +13,22 @@ public class EnemyHealth : MonoBehaviour
 
     // Update is called once per frame
 
-    public void TakeDamage(float _damage)
+    public void TakeDamage(float damage)
     {
-        currentHealth = Mathf.Clamp(currentHealth - _damage, 0 , startingHealth);
-        //currentHealth -= _damage;
+        currentHealth -= damage;
+        
+        Debug.Log(gameObject.name + " Kena hit! HP sisa: " + currentHealth);
 
-        if (currentHealth > 0 )
+        if (currentHealth <= 0 )
         {
-            
+            Debug.Log("Musuh Mati!");
+            Die();
         }
-        else
-        {
-            
-        }
-
     }
 
-
+    void Die()
+    {
+        Destroy(gameObject);
+    }
 
 }

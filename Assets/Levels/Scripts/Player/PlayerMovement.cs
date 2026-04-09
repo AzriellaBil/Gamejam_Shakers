@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
@@ -8,13 +10,15 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] private float wallJumpX;   // kekuatan loncat horizontal
     [SerializeField] private float wallJumpY;   // kekuatan loncat vertical
     [SerializeField] private float wallStickTime; // durasi "diem" sebelum slide
-    
+    [SerializeField] public float dashPower = 30f;
+    [SerializeField] private float dashTime = 0.2f;
+    [SerializeField] private float dashCooldown = 1f;
 
     private Rigidbody2D rb;
-    private bool grounded;
     private float horizontalInput; 
     private bool jumpRequested;    
     private SpriteRenderer sr;
+    private int facingDirection = 1;
     
     private bool isGrounded;
     private bool isTouchingWall;
@@ -23,27 +27,50 @@ public class PlayerMovementScript : MonoBehaviour
     private float wallStickTimer;   // timer sebelum mulai slide
     private bool isWallSticking;    // fase "diem" di wall
 
+    private bool canDash;
+    private bool isDashing;
+    [SerializeField] private TrailRenderer tr;
+
+    private PlayerCombat combatScript;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        combatScript = GetComponent<PlayerCombat>();
     }
 
+    private void Start()
+    {
+        canDash = true;
+    }
 
     void Update()
     {
+        if (isDashing)
+        {
+            return;
+        }
+
+        if (combatScript != null && combatScript.isAttacking)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocityY);
+            return;
+        }
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
         if (horizontalInput > 0.01f)
-            sr.flipX = false;
+        {
+            transform.eulerAngles = new Vector3(0, 0, 0);
+            facingDirection = 1;
+        }
         else if (horizontalInput < -0.01f)
-            sr.flipX = true;
+        {
+            transform.eulerAngles = new Vector3(0, 180, 0);
+            facingDirection = -1;
+            
+        }
         
-        if (horizontalInput > 0.01f) sr.flipX = false;
-        else if (horizontalInput < -0.01f) sr.flipX = true;
-
-        if (Input.GetKeyDown(KeyCode.Space) && grounded)
-            jumpRequested = true;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded)
@@ -52,8 +79,6 @@ public class PlayerMovementScript : MonoBehaviour
                 jumpRequested = true; // wall jump!
         }
         
-        // Hitung timer stick
-        // Selama player push ke arah wall, timer direset terus
         bool pushingIntoWall = (wallDirection == 1 && horizontalInput > 0.01f) ||
                                (wallDirection == -1 && horizontalInput < -0.01f);
                                
@@ -67,12 +92,22 @@ public class PlayerMovementScript : MonoBehaviour
             wallStickTimer = wallStickTime; // reset timer kalau lepas dari wall
             isWallSticking = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
+
     }
 
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(horizontalInput * speed, rb.linearVelocityY);
+        if (isDashing)
+        {
+            return;
+        }
+
         if (isTouchingWall && !isGrounded)
         {
             if (isWallSticking)
@@ -94,8 +129,6 @@ public class PlayerMovementScript : MonoBehaviour
 
         if (jumpRequested)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocityX, jumppower);
-            grounded = false;
             if (isGrounded)
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocityX, jumppower);
@@ -112,13 +145,17 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Location"))
+            print(collision.gameObject.name) ;  
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground")) 
-            grounded = true;
-        if (collision.gameObject.CompareTag("Ground"))
             isGrounded = true;
-            
+        
         if (collision.gameObject.CompareTag("Wall"))
         {
             isTouchingWall = true;
@@ -136,4 +173,26 @@ public class PlayerMovementScript : MonoBehaviour
             isTouchingWall = false;
     }
 
+    private IEnumerator Dash()
+    {
+        isDashing = true;
+        canDash = false;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.linearVelocity = new Vector2(facingDirection * dashPower, 0f);
+        if (tr != null)
+        {
+            tr.emitting = true;
+        }
+        yield return new WaitForSeconds(dashTime);
+        if (tr != null)
+        {
+            tr.emitting = false;
+        }
+        rb.gravityScale = originalGravity;
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocityY);
+        isDashing = false;
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
 }
