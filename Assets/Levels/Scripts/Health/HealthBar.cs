@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.Splines.ExtrusionShapes;
 using UnityEngine.UI;

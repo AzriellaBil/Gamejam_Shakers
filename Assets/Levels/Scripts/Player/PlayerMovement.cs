@@ -26,6 +26,7 @@ public class PlayerMovementScript : MonoBehaviour
 
     private float wallStickTimer;   // timer sebelum mulai slide
     private bool isWallSticking;    // fase "diem" di wall
+    public bool IsWallSliding => isTouchingWall && !isGrounded && rb.linearVelocityY < 0;
 
     private bool canDash;
     private bool isDashing;
@@ -33,11 +34,14 @@ public class PlayerMovementScript : MonoBehaviour
 
     private PlayerCombat combatScript;
 
+    private Animator anim;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         combatScript = GetComponent<PlayerCombat>();
+        anim = GetComponent<Animator>();
     }
 
     private void Start()
@@ -47,6 +51,15 @@ public class PlayerMovementScript : MonoBehaviour
 
     void Update()
     {
+        if (anim != null)
+        {
+            anim.SetFloat("Speed", Mathf.Abs(horizontalInput));
+            anim.SetFloat("yVelocity", rb.linearVelocityY);
+            anim.SetBool("isGrounded", isGrounded);
+            anim.SetBool("isWallSliding", isTouchingWall && !isGrounded);
+            anim.SetBool("isDashing", isDashing);
+        }
+
         if (isDashing)
         {
             return;

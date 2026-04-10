@@ -16,12 +16,9 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        
-        Debug.Log(gameObject.name + " Kena hit! HP sisa: " + currentHealth);
 
         if (currentHealth <= 0 )
         {
-            Debug.Log("Musuh Mati!");
             Die();
         }
     }

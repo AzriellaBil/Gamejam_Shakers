@@ -10,11 +10,18 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float attackDuration = 0.15f;
     
     public bool isAttacking { get; private set; }
+    private Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     void Update()
     {
+        var movement = GetComponent<PlayerMovementScript>();
         // Contoh: Kalau pencet klik kiri mouse atau tombol J
-        if (Input.GetKeyDown(KeyCode.J) && !isAttacking)
+        if (Input.GetKeyDown(KeyCode.J) && !isAttacking && !movement.IsWallSliding)
         {
             StartCoroutine(AttackAnimation());
         }
@@ -24,10 +31,16 @@ public class PlayerCombat : MonoBehaviour
     {
         isAttacking = true;
 
-        float arahY = transform.eulerAngles.y;
-        transform.eulerAngles = new Vector3(0f, arahY, -45f);
+        if(anim != null)
+        {
+            anim.SetTrigger("Attack");
+        }
 
         Attack();
+
+        float arahY = transform.eulerAngles.y;
+        transform.eulerAngles = new Vector3(0f, arahY, 0f);
+
         yield return new WaitForSeconds(attackDuration);
 
         transform.eulerAngles = new Vector3(0f, arahY, 0f);
