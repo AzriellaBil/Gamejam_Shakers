@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    [SerializeField] private float jumppower;
-    [SerializeField] private float wallSlideSpeed = 1.5f;
-    [SerializeField] private float wallJumpX = 15f;   // kekuatan loncat horizontal
-    [SerializeField] private float wallJumpY = 15f;   // kekuatan loncat vertical
+    [SerializeField] private float speed = 15f;
+    [SerializeField] private float jumppower = 25f;
+    [SerializeField] private float wallSlideSpeed = 5f;
+    [SerializeField] private float wallJumpX = 60f;   // kekuatan loncat horizontal
+    [SerializeField] private float wallJumpY = 25f;   // kekuatan loncat vertical
     [SerializeField] private float wallStickTime = 3f; // durasi "diem" sebelum slide
     [SerializeField] public float dashPower = 30f;
     [SerializeField] private float dashTime = 0.2f;
