@@ -12,12 +12,12 @@ public class PlayerCombat : MonoBehaviour
     
     public bool isAttacking { get; private set; }
     private Animator anim;
-    private PlayerMovementScript moovement;
+    private PlayerMovementScript movement;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        moovement = GetComponent<PlayerMovementScript>();
+        movement = GetComponent<PlayerMovementScript>();
     }
 
     void Update()

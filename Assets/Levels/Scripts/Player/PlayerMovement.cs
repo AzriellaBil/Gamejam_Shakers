@@ -72,16 +72,24 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        if (horizontalInput > 0.01f)
+
+        if (!IsWallSliding)
         {
-            transform.eulerAngles = new Vector3(0, 0, 0);
-            facingDirection = 1;
+            if (horizontalInput > 0.01f)
+            {
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                facingDirection = 1;
+            }
+            else if (horizontalInput < -0.01f)
+            {
+                transform.eulerAngles = new Vector3(0, 180, 0);
+                facingDirection = -1;   
+            }
         }
-        else if (horizontalInput < -0.01f)
+
+        if (IsWallSliding)
         {
-            transform.eulerAngles = new Vector3(0, 180, 0);
-            facingDirection = -1;
-            
+            transform.eulerAngles = new Vector3(0, wallDirection == 1 ? 0 : 180, 0);
         }
         
         if (Input.GetKeyDown(KeyCode.Space))
@@ -106,7 +114,7 @@ public class PlayerMovementScript : MonoBehaviour
             isWallSticking = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !IsWallSliding)
         {
             StartCoroutine(Dash());
         }
@@ -192,7 +200,8 @@ public class PlayerMovementScript : MonoBehaviour
         canDash = false;
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-        rb.linearVelocity = new Vector2(facingDirection * dashPower, 0f);
+        rb.linearVelocity = Vector2.zero;
+        rb.AddForce(new Vector2(facingDirection * dashPower, 0f), ForceMode2D.Impulse);
         if (tr != null)
         {
             tr.emitting = true;
