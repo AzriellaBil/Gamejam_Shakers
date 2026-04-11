@@ -8,6 +8,7 @@ TagManager:
   - Location
   - Wall
   - Enemy
+  - Void
   layers:
   - Default
   - TransparentFX
