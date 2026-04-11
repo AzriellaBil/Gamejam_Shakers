@@ -3,39 +3,47 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] public float startingHealth;
+    [Header("Stats")]
+    [SerializeField] public float startingHealth = 100f;
+
+    [Header("Referensi")]
     [SerializeField] private HealthBar healthBar;
+    [SerializeField] private PlayerRespawn respawnScript;
+
     public float currentHealth { get; private set;}
+
+    private bool isDead = false;
+
     void Start()
     {
         currentHealth = startingHealth;
+        if (respawnScript == null)
+            respawnScript = GetComponent<PlayerRespawn>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(float damage)
     {
-            if (Input.GetKeyDown(KeyCode.E))
-            TakeDamage(1);
+        if (isDead) return;
+
+        currentHealth = Mathf.Clamp(currentHealth - damage, 0 , startingHealth);
+        
+        if (healthBar != null)
+            healthBar.UpdateHealthBar();
+        
+        if (currentHealth <= 0 )
+        {
+            isDead = true;
+            if (respawnScript != null)
+                respawnScript.TriggerDeath("Mati dibantai Alien.");
+        }
     }
 
-    public void TakeDamage(float _damage)
+    public void ResetHealth()
     {
-        currentHealth = Mathf.Clamp(currentHealth - _damage, 0 , startingHealth);
-        healthBar.UpdateHealthBar();
-        //currentHealth -= _damage;
-
-        if (currentHealth > 0 )
-        {
-            
-        }
-        else
-        {
-            
-        }
-
+        isDead = false;
+        currentHealth = startingHealth;
+        if (healthBar != null)
+            healthBar.UpdateHealthBar();
     }
-
-
 
 }

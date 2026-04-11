@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using TMPro; // Wajib pakai ini buat UI Teks
+using TMPro;
 
 public class PlayerRespawn : MonoBehaviour
 {
@@ -8,63 +8,57 @@ public class PlayerRespawn : MonoBehaviour
     [SerializeField] private GameObject deathScreen;
     [SerializeField] private TextMeshProUGUI deathText;
 
-    [Header("Stats")]
-    public int maxHP = 100;
-    private int currentHP;
-
+    [Header("Referensi")]
+    [SerializeField] private Health healthScript;
+ 
     private Checkpoint currentCheckpoint;
-    private Vector3 startPosition; // Posisi awal kalau player belum nemu altar satupun
-    private PlayerMovementScript gerakScript; // Referensi script jalan kamu
+    private Vector3 startPosition;
+    private PlayerMovementScript gerakScript;
     private Rigidbody2D rb;
+    private float originalGravity;
+
+    private bool isRespawning = false;
 
     void Start()
     {
-        currentHP = maxHP;
         startPosition = transform.position;
         gerakScript = GetComponent<PlayerMovementScript>();
         rb = GetComponent<Rigidbody2D>();
+        originalGravity = rb.gravityScale;
+ 
+        if (healthScript == null)
+            healthScript = GetComponent<Health>();
     }
 
-    // Fungsi ini dipanggil sama altarnya
+    // dipanggil sama checkpoint
     public void SetNewCheckpoint(Checkpoint altarBaru)
     {
-        // Kalau player udah punya altar lama, matiin altar lamanya!
         if (currentCheckpoint != null && currentCheckpoint != altarBaru)
         {
             currentCheckpoint.MatiinPermanen();
         }
         
-        // Simpan altar baru ini sebagai tempat respawn
         currentCheckpoint = altarBaru;
     }
 
-    // Fungsi kalau kena damage musuh
-    public void TakeDamage(int damage)
+    // Dipanggil oleh Health.cs (damage musuh) dan OnTriggerEnter2D (jatuh void)
+    public void TriggerDeath(string alasan)
     {
-        currentHP -= damage;
-        if (currentHP <= 0)
-        {
-            Mati("Mati Dibantai Musuh!");
-        }
+        // Guard: jangan proses kalau lagi respawn
+        if (isRespawning) return;
+        StartCoroutine(ProsesRespawn(alasan));
     }
-
-    // Fungsi buat ngecek jatuh ke Void
+ 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Void"))
-        {
-            Mati("Terjatuh ke Dalam Jurang!");
-        }
-    }
-
-    // Proses Kematian
-    private void Mati(string alasanMati)
-    {
-        StartCoroutine(ProsesRespawn(alasanMati));
+            TriggerDeath("Terjatuh ke Dalam Jurang!");
     }
 
     private IEnumerator ProsesRespawn(string alasan)
     {
+        isRespawning = true;
+
         // 1. Matikan pergerakan & gravitasi biar player nggak tembus tanah pas mati
         gerakScript.enabled = false;
         rb.linearVelocity = Vector2.zero;
@@ -78,19 +72,17 @@ public class PlayerRespawn : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         // 4. Pindahkan posisi player ke altar (atau posisi awal kalau belum nemu altar)
-        if (currentCheckpoint != null)
-        {
-            transform.position = currentCheckpoint.transform.position;
-        }
-        else
-        {
-            transform.position = startPosition;
-        }
+        transform.position = currentCheckpoint != null
+            ? currentCheckpoint.transform.position
+            : startPosition;
 
         // 5. Reset HP, kembalikan gravitasi & hidupkan pergerakan
-        currentHP = maxHP;
-        rb.gravityScale = 6f; // Sesuaikan dengan gravitasi awal player kamu (misal 3)
+        healthScript.ResetHealth();
+
+        rb.gravityScale = originalGravity;
         gerakScript.enabled = true;
         deathScreen.SetActive(false);
+
+        isRespawning = false;
     }
 }

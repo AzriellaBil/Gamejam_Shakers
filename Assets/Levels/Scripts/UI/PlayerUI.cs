@@ -25,6 +25,7 @@ public class PlayerUI : MonoBehaviour
         if (collision.gameObject.CompareTag("Location"))
         {
             AudioSource audio = collision.GetComponent<AudioSource>();
+            if (audio == null) return;
 
             LeanTween.value(gameObject, 1f, 0f, fadeDuration)
                 .setOnUpdate((float val) => audio.volume = val)

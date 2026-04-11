@@ -12,9 +12,10 @@ public class PauseUI : MonoBehaviour
     private bool IsPaused = false;
     public void Continue()
     {
-      LeanTween.alphaCanvas(cg, 0f, TweeenSpeed)
-        .setEase(LeanTweenType.easeInOutSine)
-        .setOnComplete(() =>
+        Time.timeScale = 1f;
+        LeanTween.alphaCanvas(cg, 0f, TweeenSpeed).setIgnoreTimeScale(true)
+            .setEase(LeanTweenType.easeInOutSine)
+            .setOnComplete(() =>
         {
             IsPaused = false;
         }
@@ -23,10 +24,11 @@ public class PauseUI : MonoBehaviour
     public void Pause()
     {
         IsPaused = true;
+        Time.timeScale = 0f;
         LeanTween.cancel(gameObject); 
 
-        LeanTween.alphaCanvas(cg, 1f, TweeenSpeed)
-        .setEase(LeanTweenType.easeInOutSine);
+        LeanTween.alphaCanvas(cg, 1f, TweeenSpeed).setIgnoreTimeScale(true)
+            .setEase(LeanTweenType.easeInOutSine);
     
     }
 

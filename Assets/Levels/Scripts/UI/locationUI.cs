@@ -30,7 +30,7 @@ public class locationUI : MonoBehaviour
 
     void OnDisable()
     {
-       onNewLocation.OnEventRaised += ShowLocationUI;
+       onNewLocation.OnEventRaised -= ShowLocationUI;
     }
 
     void ShowLocationUI(string Locations)

@@ -1,19 +1,16 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    [SerializeField] public float startingHealth;
-    public float currentHealth { get; private set;}
+    [SerializeField] public int startingHealth = 40;
+    public int currentHealth { get; private set;}
+
     void Start()
     {
         currentHealth = startingHealth;
     }
 
-    // Update is called once per frame
-
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
 
@@ -25,6 +22,9 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
+        Collider2D coll = GetComponent<Collider2D>();
+        if (coll != null) coll.enabled = false;
+        
         Destroy(gameObject);
     }
 

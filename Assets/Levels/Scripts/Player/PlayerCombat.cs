@@ -4,23 +4,24 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] public Transform attackPoint;
-    [SerializeField]public float attackRange = 0.5f;
+    [SerializeField] public float attackRange = 0.5f;
     [SerializeField] public int attackDamage = 40;
+
     [SerializeField] public LayerMask enemyLayers;
     [SerializeField] private float attackDuration = 0.15f;
     
     public bool isAttacking { get; private set; }
     private Animator anim;
+    private PlayerMovementScript moovement;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        moovement = GetComponent<PlayerMovementScript>();
     }
 
     void Update()
     {
-        var movement = GetComponent<PlayerMovementScript>();
-        // Contoh: Kalau pencet klik kiri mouse atau tombol J
         if (Input.GetKeyDown(KeyCode.J) && !isAttacking && !movement.IsWallSliding)
         {
             StartCoroutine(AttackAnimation());
@@ -58,6 +59,7 @@ public class PlayerCombat : MonoBehaviour
             if (musuhBiasa != null)
             {
                 musuhBiasa.TakeDamage(attackDamage);
+                continue;
             }
 
             MinionBoss krocoBos = enemyCollider.GetComponent<MinionBoss>();

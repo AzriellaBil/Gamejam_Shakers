@@ -3,20 +3,18 @@ using UnityEngine;
 public class MeleeEnemy : MonoBehaviour
 {
     [Header ("Attack Parameters")]
-    [SerializeField] private float attackCooldown;
-    [SerializeField] private float range;
-    [SerializeField] private int damage;
+    [SerializeField] private float attackCooldown = 1.5f;
+    [SerializeField] private float range = 1f;
+    [SerializeField] private int damage = 10;
 
     [Header("Collider Parameters")]
-    [SerializeField] private float colliderDistance;
+    [SerializeField] private float colliderDistance = 1f;
     [SerializeField] private BoxCollider2D boxCollider;
 
     [Header("Player Layer")]
     [SerializeField] private LayerMask playerLayer;
-    private float cooldownTimer = 0;
 
-    //References
-    //private Animator anim;
+    private float cooldownTimer = 0f;
     private Health playerHealth;
     private EnemyPatrol enemyPatrol;
 
@@ -28,7 +26,6 @@ public class MeleeEnemy : MonoBehaviour
 
     private void Update()
     {
-        
         cooldownTimer -= Time.deltaTime;
 
         //Attack only when player in sight?
@@ -58,8 +55,10 @@ public class MeleeEnemy : MonoBehaviour
 
         return hit.collider != null;
     }
+
     private void OnDrawGizmos()
     {
+        if (boxCollider == null) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
             new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z));
@@ -67,7 +66,7 @@ public class MeleeEnemy : MonoBehaviour
 
     private void DamagePlayer()
     {
-        if (PlayerInSight())
+        if (PlayerInSight() && playerHealth != null)
             playerHealth.TakeDamage(damage);
     }
 }

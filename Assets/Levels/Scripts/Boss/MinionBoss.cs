@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class MinionBoss : MonoBehaviour
 {
-    public int maxHealth = 40; 
+    [SerializeField] public int maxHealth = 40; 
     private int currentHealth;
 
     [HideInInspector] 
-    public BossMeowl bosAtasan; // Disembunyikan di Inspector karena diisi otomatis sama script Bos
+    public BossMeowl bosAtasan;
 
     private Animator anim;
+    private bool isDead = false;
 
     void Start()
     {
@@ -19,6 +20,8 @@ public class MinionBoss : MonoBehaviour
     // Fungsi ini dipanggil dari script PlayerCombat kamu pas player mukul
     public void TakeDamage(int damage)
     {
+        if (isDead) return;
+
         currentHealth -= damage;
 
         if (currentHealth <= 0)
@@ -29,6 +32,8 @@ public class MinionBoss : MonoBehaviour
 
     private void Mati()
     {
+        isDead = true;
+
         // 1. Lapor ke bos kalau kroco ini mati!
         if (bosAtasan != null)
         {
@@ -36,10 +41,10 @@ public class MinionBoss : MonoBehaviour
         }
 
         // 3. Matikan collider dan script biar nggak bisa dipukul lagi pas udah jadi mayat
-        GetComponent<Collider2D>().enabled = false;
+        Collider2D coll = GetComponent<Collider2D>();
+        if (coll != null) coll.enabled = false;
+        
         this.enabled = false;
-
-        // 4. Hapus mayatnya setelah 1.5 detik
-        Destroy(gameObject);
+        Destroy(gameObject, 0.1f);
     }
 }
