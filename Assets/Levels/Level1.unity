@@ -8667,9 +8667,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2141695001}
   m_CullTransparentMesh: 1
-<<<<<<< Updated upstream
---- !u!1001 &322081321009569790
-=======
 --- !u!1001 &1762822122188997397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8818,7 +8815,6 @@ Animator:
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &6318450004535587386
->>>>>>> Stashed changes
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
