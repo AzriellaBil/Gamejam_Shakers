@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour
+public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] public int startingHealth = 40;
     public int currentHealth { get; private set;}
@@ -25,7 +25,7 @@ public class EnemyHealth : MonoBehaviour
         Collider2D coll = GetComponent<Collider2D>();
         if (coll != null) coll.enabled = false;
         
-        Destroy(gameObject);
+        Destroy(transform.parent.gameObject);
     }
 
 }

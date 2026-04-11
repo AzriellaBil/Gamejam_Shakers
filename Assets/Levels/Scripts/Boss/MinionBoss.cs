@@ -1,20 +1,20 @@
 using UnityEngine;
 
-public class MinionBoss : MonoBehaviour
+public class MinionBoss : MonoBehaviour , IDamageable
 {
-    [SerializeField] public int maxHealth = 40; 
-    private int currentHealth;
 
-    [HideInInspector] 
+    [SerializeField] public int maxHealth;
+    public int currentHealth { get; private set;}
+
     public BossMeowl bosAtasan;
 
-    private Animator anim;
+    //private Animator anim;
     private bool isDead = false;
 
     void Start()
     {
         currentHealth = maxHealth;
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
     }
 
     // Fungsi ini dipanggil dari script PlayerCombat kamu pas player mukul
@@ -45,6 +45,6 @@ public class MinionBoss : MonoBehaviour
         if (coll != null) coll.enabled = false;
         
         this.enabled = false;
-        Destroy(gameObject, 0.1f);
+        Destroy(transform.parent.gameObject, 0.1f);
     }
 }

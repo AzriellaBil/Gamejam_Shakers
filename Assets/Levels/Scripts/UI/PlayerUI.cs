@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerUI : MonoBehaviour
 {
     public StringEventChannel PlayerLocation;
+    [SerializeField] private Health healthScript;
     public float fadeDuration = 1f;
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -17,6 +18,10 @@ public class PlayerUI : MonoBehaviour
 
             LeanTween.value(gameObject, 0f, 1f, fadeDuration)
                 .setOnUpdate((float val) => audio.volume = val);
+        }
+        if (collision.CompareTag("Void"))
+        {
+            healthScript.TakeDamage(healthScript.startingHealth, "Jatuh ke Void");
         }
     }
 

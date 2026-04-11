@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    [Header ("Patrol Points")]
+    [Header("Patrol Points")]
     [SerializeField] private Transform leftEdge;
     [SerializeField] private Transform rightEdge;
 
@@ -32,19 +32,22 @@ public class EnemyPatrol : MonoBehaviour
 
     private void Update()
     {
-        if (movingLeft)
+        if (enemy != null)
         {
-            if (enemy.position.x >= leftEdge.position.x)
-                MoveInDirection(-1);
+            if (movingLeft)
+            {
+                if (enemy.position.x >= leftEdge.position.x)
+                    MoveInDirection(-1);
+                else
+                    DirectionChange();
+            }
             else
-                DirectionChange();
-        }
-        else
-        {
-            if (enemy.position.x <= rightEdge.position.x)
-                MoveInDirection(1);
-            else
-                DirectionChange();
+            {
+                if (enemy.position.x <= rightEdge.position.x)
+                    MoveInDirection(1);
+                else
+                    DirectionChange();
+            }
         }
     }
 
@@ -53,7 +56,7 @@ public class EnemyPatrol : MonoBehaviour
         //anim.SetBool("moving", false);
         idleTimer += Time.deltaTime;
 
-        if(idleTimer > idleDuration)
+        if (idleTimer > idleDuration)
             movingLeft = !movingLeft;
     }
 

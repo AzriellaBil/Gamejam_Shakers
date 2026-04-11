@@ -9,15 +9,15 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] public LayerMask enemyLayers;
     [SerializeField] private float attackDuration = 0.15f;
-    
+
     public bool isAttacking { get; private set; }
     private Animator anim;
-    private PlayerMovementScript moovement;
+    private PlayerMovementScript movement;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        moovement = GetComponent<PlayerMovementScript>();
+        movement = GetComponent<PlayerMovementScript>();
     }
 
     void Update()
@@ -32,7 +32,7 @@ public class PlayerCombat : MonoBehaviour
     {
         isAttacking = true;
 
-        if(anim != null)
+        if (anim != null)
         {
             anim.SetTrigger("Attack");
         }
@@ -55,17 +55,10 @@ public class PlayerCombat : MonoBehaviour
 
         foreach (Collider2D enemyCollider in hitEnemies)
         {
-            EnemyHealth musuhBiasa = enemyCollider.GetComponent<EnemyHealth>();
-            if (musuhBiasa != null)
+            IDamageable target = enemyCollider.GetComponent<IDamageable>();
+            if (target != null)
             {
-                musuhBiasa.TakeDamage(attackDamage);
-                continue;
-            }
-
-            MinionBoss krocoBos = enemyCollider.GetComponent<MinionBoss>();
-            if (krocoBos != null)
-            {
-                krocoBos.TakeDamage(attackDamage);
+                target.TakeDamage(attackDamage);
             }
         }
     }

@@ -36,7 +36,7 @@ public class BossMeowl : MonoBehaviour
 
     void OnDisable()
     {
-        onNewLocation.OnEventRaised += EnableBoss;
+        onNewLocation.OnEventRaised -= EnableBoss;
     }
 
     void EnableBoss(string Locations)
@@ -63,6 +63,7 @@ public class BossMeowl : MonoBehaviour
         {
             float hoverY = Mathf.Sin(Time.time * kecepatanMelayang) * tinggiMelayang;
             transform.position = posisiAwal + new Vector3(0, hoverY, 0);
+
         }
     }
 
@@ -83,7 +84,7 @@ public class BossMeowl : MonoBehaviour
                 curMinion += 1;
 
                 // Kasih tau kroconya siapa bosnya
-                MinionBoss scriptKroco = krocoBaru.GetComponent<MinionBoss>();
+                MinionBoss scriptKroco = krocoBaru.transform.Find("BaseEnemy").GetComponent<MinionBoss>();
                 if (scriptKroco != null)
                 {
                     scriptKroco.bosAtasan = this;
@@ -111,8 +112,9 @@ public class BossMeowl : MonoBehaviour
     // Fungsi ini bakal dipanggil SAMA SI KROCO pas dia mati
     public void KenaDamage()
     {
+        curMinion -= 1;
         currentHP--;
-        Debug.Log("Sisa HP Bos: " + currentHP);
+        print("Sisa HP Bos: " + currentHP);
 
         if (anim != null) anim.SetTrigger("Hurt"); // Memicu animasi kena hit
 

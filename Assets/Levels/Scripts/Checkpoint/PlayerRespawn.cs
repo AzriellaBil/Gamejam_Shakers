@@ -10,6 +10,7 @@ public class PlayerRespawn : MonoBehaviour
 
     [Header("Referensi")]
     [SerializeField] private Health healthScript;
+    [SerializeField] private float WaktuRespawn;
  
     private Checkpoint currentCheckpoint;
     private Vector3 startPosition;
@@ -49,11 +50,6 @@ public class PlayerRespawn : MonoBehaviour
         StartCoroutine(ProsesRespawn(alasan));
     }
  
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Void"))
-            TriggerDeath("Terjatuh ke Dalam Jurang!");
-    }
 
     private IEnumerator ProsesRespawn(string alasan)
     {
@@ -69,7 +65,7 @@ public class PlayerRespawn : MonoBehaviour
         deathScreen.SetActive(true);
 
         // 3. Tunggu 2 detik biar dramatis
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(WaktuRespawn);
 
         // 4. Pindahkan posisi player ke altar (atau posisi awal kalau belum nemu altar)
         transform.position = currentCheckpoint != null

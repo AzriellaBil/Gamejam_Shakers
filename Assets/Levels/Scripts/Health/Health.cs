@@ -9,6 +9,9 @@ public class Health : MonoBehaviour
     [Header("Referensi")]
     [SerializeField] private HealthBar healthBar;
     [SerializeField] private PlayerRespawn respawnScript;
+    
+    public FloatEventChannel PlayerHP;
+
 
     public float currentHealth { get; private set;}
 
@@ -21,12 +24,14 @@ public class Health : MonoBehaviour
             respawnScript = GetComponent<PlayerRespawn>();
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, string DamageCause)
     {
         if (isDead) return;
 
-        currentHealth = Mathf.Clamp(currentHealth - damage, 0 , startingHealth);
         
+        currentHealth = Mathf.Clamp(currentHealth - damage, 0 , startingHealth);
+        PlayerHP.Raise(currentHealth);
+
         if (healthBar != null)
             healthBar.UpdateHealthBar();
         
@@ -34,7 +39,7 @@ public class Health : MonoBehaviour
         {
             isDead = true;
             if (respawnScript != null)
-                respawnScript.TriggerDeath("Mati dibantai Alien.");
+                respawnScript.TriggerDeath(DamageCause);
         }
     }
 
