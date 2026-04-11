@@ -158,11 +158,7 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.CompareTag("Location"))
-            print(collision.gameObject.name) ;  
-    }
+    
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
