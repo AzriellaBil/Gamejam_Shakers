@@ -52,11 +52,19 @@ public class PlayerCombat : MonoBehaviour
         // 1. Buat lingkaran deteksi (Hitbox) dan cari semua yang kena
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
-        // 2. Kasih damage ke semua musuh yang kena di dalam lingkaran
         foreach (Collider2D enemyCollider in hitEnemies)
         {
-            // Ambil komponen "Enemy" dari objek yang ketabrak, lalu panggil fungsi TakeDamage()
-            enemyCollider.GetComponent<EnemyHealth>().TakeDamage(attackDamage);
+            EnemyHealth musuhBiasa = enemyCollider.GetComponent<EnemyHealth>();
+            if (musuhBiasa != null)
+            {
+                musuhBiasa.TakeDamage(attackDamage);
+            }
+
+            MinionBoss krocoBos = enemyCollider.GetComponent<MinionBoss>();
+            if (krocoBos != null)
+            {
+                krocoBos.TakeDamage(attackDamage);
+            }
         }
     }
 
